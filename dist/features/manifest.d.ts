@@ -20,8 +20,8 @@ export interface TndManifest {
 }
 export interface ManifestOptions {
     /**
-     * The Sanity dataset the site reads. Defaults to the build's `SANITY_STUDIO_DATASET` environment variable,
-     * as set on Netlify and Workers Builds; left out (null) when neither is set.
+     * The Sanity dataset the site reads. Defaults to what the site itself uses: the build's `SANITY_STUDIO_DATASET`
+     * environment variable, else that variable's default in the project's `env.schema` (astro:env). Null when none.
      */
     dataset?: string;
 }

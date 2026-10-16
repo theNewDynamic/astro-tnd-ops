@@ -9,10 +9,10 @@ whether it's built static, and which Sanity dataset it reads.
 Installed from GitHub (it isn't published on npm), pinned to a release tag:
 
 ```sh
-npm install github:theNewDynamic/astro-tnd-ops#v0.1.0
+npm install github:theNewDynamic/astro-tnd-ops#v0.1.1
 ```
 
-That adds `"@thenewdynamic/astro-tnd-ops": "github:theNewDynamic/astro-tnd-ops#v0.1.0"` to `package.json`. The repo is
+That adds `"@thenewdynamic/astro-tnd-ops": "github:theNewDynamic/astro-tnd-ops#v0.1.1"` to `package.json`. The repo is
 public so that build servers (Netlify, Workers Builds) can fetch it without credentials: keep anything private out of it.
 
 ```js
@@ -43,7 +43,7 @@ Nothing else: the file is written into the build output, whatever the adapter (t
 | `version` | Format version. Bumped only when a field changes meaning or goes away. | Reading old and new sites alike. |
 | `build.at` | When the build ran. | "Last deployed". |
 | `output` | Astro's `output` (`static` or `server`). | "Site behind its content": only static pages wait for a build. |
-| `sanity.dataset` | The dataset the site reads, from the build's `SANITY_STUDIO_DATASET` (or the option below); `null` when unknown. | Catching a live site that reads `staging`. |
+| `sanity.dataset` | The dataset the site reads: the build's `SANITY_STUDIO_DATASET`, else its default in the project's `env.schema` (or the option below); `null` when unknown. | Catching a live site that reads `staging`. |
 
 **The file is public, so it only holds facts that are harmless or already visible.** No package versions (they would
 tell an attacker which known vulnerabilities to try), no commit, no environment values beyond the dataset name,
@@ -66,7 +66,7 @@ tndOps({
 | Option | Default | Description |
 |---|---|---|
 | `manifest` | `true` | Publish `/.well-known/tnd.json`. |
-| `manifest.dataset` | `process.env.SANITY_STUDIO_DATASET` | Sanity dataset reported in the manifest. |
+| `manifest.dataset` | `SANITY_STUDIO_DATASET`, else its `env.schema` default | Sanity dataset reported in the manifest. |
 
 ## Adding a feature
 
