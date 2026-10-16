@@ -1,8 +1,9 @@
 {
   "name": "@thenewdynamic/astro-tnd-ops",
   "version": "0.1.0",
+  "private": true,
   "type": "module",
-  "description": "Astro integration that lets TND Ops read a site: publishes /.well-known/tnd.json at build time",
+  "description": "Astro integration that lets TND Ops read a site: publishes /.well-known/tnd.json at build time. Installed from GitHub, not npm.",
   "author": "The New Dynamic",
   "license": "MIT",
   "homepage": "https://github.com/theNewDynamic/astro-tnd-ops",
@@ -22,9 +23,6 @@
     "dist",
     "src"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -33,8 +31,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "dev": "tsc --watch"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

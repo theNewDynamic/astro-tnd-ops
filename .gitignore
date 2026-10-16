@@ -3,8 +3,7 @@ node_modules/
 .npm
 *.tsbuildinfo
 
-# Build outputs
-dist/
+# Build outputs (dist/ is committed: projects install from GitHub, without building)
 build/
 
 # Astro

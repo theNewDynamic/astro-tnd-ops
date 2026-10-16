@@ -6,9 +6,14 @@ whether it's built static, and which Sanity dataset it reads.
 
 ## Installation
 
+Installed from GitHub (it isn't published on npm), pinned to a release tag:
+
 ```sh
-npm install @thenewdynamic/astro-tnd-ops
+npm install github:theNewDynamic/astro-tnd-ops#v0.1.0
 ```
+
+That adds `"@thenewdynamic/astro-tnd-ops": "github:theNewDynamic/astro-tnd-ops#v0.1.0"` to `package.json`. The repo is
+public so that build servers (Netlify, Workers Builds) can fetch it without credentials: keep anything private out of it.
 
 ```js
 // astro.config.mjs
@@ -66,8 +71,16 @@ tndOps({
 ## Adding a feature
 
 Each feature is a module in `src/features/` with its own option in `TndOpsOptions` (`src/index.ts`), wired into the
-integration's hooks there. Release with a version bump and `npm publish` (`prepublishOnly` builds `dist/`), then bump
-the dependency in each project.
+integration's hooks there.
+
+## Releasing
+
+`dist/` is committed: npm doesn't build a package it installs from GitHub (it would have to install Astro and
+TypeScript first), so projects get the built files as they are in the repo.
+
+1. `npm run build`, and commit the change with `dist/`.
+2. Bump `version` in `package.json`, commit, and tag it: `git tag v0.2.0 && git push --tags`.
+3. In each project: `npm install github:theNewDynamic/astro-tnd-ops#v0.2.0`.
 
 ## Development
 
