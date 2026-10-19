@@ -2,7 +2,7 @@
 
 Astro integration that lets [TND Ops](https://github.com/theNewDynamic/sanity-backups) read a site. For now it does one
 thing: at build time, it publishes `/.well-known/tnd.json`, which TND Ops uses to know when the site was last deployed,
-whether it's built static, and which Sanity dataset it reads.
+whether it's built static, which environment (`ASTRO_ENV`) it was built for, and which Sanity dataset it reads.
 
 ## Installation
 
@@ -34,6 +34,7 @@ Nothing else: the file is written into the build output, whatever the adapter (t
   "version": 1,
   "build": { "at": "2026-10-16T14:30:13.139Z" },
   "output": "static",
+  "env": "production",
   "sanity": { "dataset": "production" }
 }
 ```
@@ -43,10 +44,11 @@ Nothing else: the file is written into the build output, whatever the adapter (t
 | `version` | Format version. Bumped only when a field changes meaning or goes away. | Reading old and new sites alike. |
 | `build.at` | When the build ran. | "Last deployed". |
 | `output` | Astro's `output` (`static` or `server`). | "Site behind its content": only static pages wait for a build. |
+| `env` | The build's `ASTRO_ENV`, else its default in the project's `env.schema` (or the option below); `null` when unknown. Pages rendered on request read `ASTRO_ENV` again at run time. | Catching a live site not built for `production` (no analytics, SEO off). |
 | `sanity.dataset` | The dataset the site reads: the build's `SANITY_STUDIO_DATASET`, else its default in the project's `env.schema` (or the option below); `null` when unknown. | Catching a live site that reads `staging`. |
 
 **The file is public, so it only holds facts that are harmless or already visible.** No package versions (they would
-tell an attacker which known vulnerabilities to try), no commit, no environment values beyond the dataset name,
+tell an attacker which known vulnerabilities to try), no commit, no environment values beyond `ASTRO_ENV` and the dataset name,
 nothing about users. Keep it that way when adding fields.
 
 ## Options
@@ -57,6 +59,8 @@ it off.
 ```js
 tndOps({
   manifest: {
+    // The environment the site was built for, when it isn't in ASTRO_ENV at build time.
+    env: 'production',
     // The Sanity dataset the site reads, when it isn't in SANITY_STUDIO_DATASET at build time.
     dataset: 'production',
   },
@@ -66,6 +70,7 @@ tndOps({
 | Option | Default | Description |
 |---|---|---|
 | `manifest` | `true` | Publish `/.well-known/tnd.json`. |
+| `manifest.env` | `ASTRO_ENV`, else its `env.schema` default | Environment reported in the manifest. |
 | `manifest.dataset` | `SANITY_STUDIO_DATASET`, else its `env.schema` default | Sanity dataset reported in the manifest. |
 
 ## Adding a feature

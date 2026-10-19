@@ -12,6 +12,7 @@ export function buildManifest(config, options, now = new Date()) {
         version: 1,
         build: { at: now.toISOString() },
         output: config.output,
+        env: options.env ?? process.env.ASTRO_ENV ?? schemaDefault(config, 'ASTRO_ENV'),
         sanity: { dataset: options.dataset ?? process.env.SANITY_STUDIO_DATASET ?? schemaDefault(config, 'SANITY_STUDIO_DATASET') },
     };
 }

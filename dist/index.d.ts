@@ -6,7 +6,7 @@ export type { ManifestOptions, TndManifest };
  * turns it off. New features join here, each in its own module under `features/`.
  */
 export interface TndOpsOptions {
-    /** `/.well-known/tnd.json`, read by TND Ops (last deployed, output mode, Sanity dataset). On by default. */
+    /** `/.well-known/tnd.json`, read by TND Ops (last deployed, output mode, ASTRO_ENV, Sanity dataset). On by default. */
     manifest?: boolean | ManifestOptions;
 }
 export default function tndOps(options?: TndOpsOptions): AstroIntegration;
