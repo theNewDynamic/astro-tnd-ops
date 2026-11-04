@@ -8,12 +8,13 @@ function schemaDefault(config, name) {
 /** Where the manifest is served from, relative to the site root. */
 export const MANIFEST_PATH = '.well-known/tnd.json';
 export function buildManifest(config, options, now = new Date()) {
+    const dataset = options.dataset ?? process.env.SANITY_STUDIO_DATASET ?? schemaDefault(config, 'SANITY_STUDIO_DATASET');
     return {
         version: 1,
         build: { at: now.toISOString() },
         output: config.output,
         env: options.env ?? process.env.ASTRO_ENV ?? schemaDefault(config, 'ASTRO_ENV'),
-        sanity: { dataset: options.dataset ?? process.env.SANITY_STUDIO_DATASET ?? schemaDefault(config, 'SANITY_STUDIO_DATASET') },
+        ...(dataset ? { sanity: { dataset } } : {}),
     };
 }
 /** Writes the manifest into the build's static output (`dir`: what the host serves as files). */

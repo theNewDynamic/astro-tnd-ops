@@ -17,9 +17,10 @@ export interface TndManifest {
   output: AstroConfig['output'];
   /** The build's `ASTRO_ENV` ("production", "staging"…), so TND Ops can catch a live site not built for production. Null when not known. */
   env: string | null;
-  sanity: {
-    /** The dataset the site reads, so TND Ops can catch a live site on `staging`. Null when not known. */
-    dataset: string | null;
+  /** Absent when no dataset is known, which is the case of a site without Sanity. */
+  sanity?: {
+    /** The dataset the site reads, so TND Ops can catch a live site on `staging`. */
+    dataset: string;
   };
 }
 
@@ -31,7 +32,8 @@ export interface ManifestOptions {
   env?: string;
   /**
    * The Sanity dataset the site reads. Defaults to what the site itself uses: the build's `SANITY_STUDIO_DATASET`
-   * environment variable, else that variable's default in the project's `env.schema` (astro:env). Null when none.
+   * environment variable, else that variable's default in the project's `env.schema` (astro:env). Without any of
+   * these, the manifest has no `sanity`.
    */
   dataset?: string;
 }
@@ -47,12 +49,13 @@ function schemaDefault(config: AstroConfig, name: string): string | null {
 export const MANIFEST_PATH = '.well-known/tnd.json';
 
 export function buildManifest(config: AstroConfig, options: ManifestOptions, now = new Date()): TndManifest {
+  const dataset = options.dataset ?? process.env.SANITY_STUDIO_DATASET ?? schemaDefault(config, 'SANITY_STUDIO_DATASET');
   return {
     version: 1,
     build: { at: now.toISOString() },
     output: config.output,
     env: options.env ?? process.env.ASTRO_ENV ?? schemaDefault(config, 'ASTRO_ENV'),
-    sanity: { dataset: options.dataset ?? process.env.SANITY_STUDIO_DATASET ?? schemaDefault(config, 'SANITY_STUDIO_DATASET') },
+    ...(dataset ? { sanity: { dataset } } : {}),
   };
 }
 

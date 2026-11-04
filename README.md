@@ -45,7 +45,7 @@ Nothing else: the file is written into the build output, whatever the adapter (t
 | `build.at` | When the build ran. | "Last deployed". |
 | `output` | Astro's `output` (`static` or `server`). | "Site behind its content": only static pages wait for a build. |
 | `env` | The build's `ASTRO_ENV`, else its default in the project's `env.schema` (or the option below); `null` when unknown. Pages rendered on request read `ASTRO_ENV` again at run time. | Catching a live site not built for `production` (no analytics, SEO off). |
-| `sanity.dataset` | The dataset the site reads: the build's `SANITY_STUDIO_DATASET`, else its default in the project's `env.schema` (or the option below); `null` when unknown. | Catching a live site that reads `staging`. |
+| `sanity.dataset` | The dataset the site reads: the build's `SANITY_STUDIO_DATASET`, else its default in the project's `env.schema` (or the option below). When none of these gives a dataset, as on a site without Sanity, the manifest has no `sanity`. | Catching a live site that reads `staging`. |
 
 **The file is public, so it only holds facts that are harmless or already visible.** No package versions (they would
 tell an attacker which known vulnerabilities to try), no commit, no environment values beyond `ASTRO_ENV` and the dataset name,
